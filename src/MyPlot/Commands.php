@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace MyPlot;
 
 //use jasonwynn10\EasyCommandAutofill\Main;
-use JetBrains\PhpStorm\Pure;
 use MyPlot\forms\MainForm;
 use MyPlot\subcommand\AddHelperSubCommand;
 use MyPlot\subcommand\AutoSubCommand;

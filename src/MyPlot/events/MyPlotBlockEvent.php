@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace MyPlot\events;
 
-use JetBrains\PhpStorm\Pure;
 use MyPlot\Plot;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
