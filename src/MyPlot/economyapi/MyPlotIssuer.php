@@ -22,12 +22,15 @@ namespace MyPlot\economyapi;
 
 use onebone\economyapi\event\Issuer;
 
-class MyPlotIssuer implements Issuer {
+class MyPlotIssuer implements Issuer
+{
 
-	public function __construct() {
-	}
+    public function __construct()
+    {
+    }
 
-	public function __toString(): string {
-		return "MyPlot";
-	}
+    public function __toString(): string
+    {
+        return "MyPlot";
+    }
 }

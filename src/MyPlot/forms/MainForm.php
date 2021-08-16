@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace MyPlot\forms;
 
 use dktapps\pmforms\MenuOption;
@@ -9,48 +10,51 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use ReflectionClass;
 
-class MainForm extends SimpleMyPlotForm {
+class MainForm extends SimpleMyPlotForm
+{
 
-	/** @var SubCommand[] $link */
-	private $link = [];
+    /** @var SubCommand[] $link */
+    private $link = [];
 
-	/**
-	 * MainForm constructor.
-	 *
-	 * @param Player $player
-	 * @param SubCommand[] $subCommands
-	 *
+    /**
+     * MainForm constructor.
+     *
+     * @param Player $player
+     * @param SubCommand[] $subCommands
+     *
      */
-	public function __construct(Player $player, array $subCommands) {
-		$plugin = MyPlot::getInstance();
+    public function __construct(Player $player, array $subCommands)
+    {
+        $plugin = MyPlot::getInstance();
 
-		$this->plot = $plugin->getPlotByPosition($player->getPosition());
+        $this->plot = $plugin->getPlotByPosition($player->getPosition());
 
-		$elements = [];
-		foreach($subCommands as $name => $command) {
-			if(!$command->canUse($player) or $command->getForm($player) === null)
-				continue;
-			$name = (new ReflectionClass($command))->getShortName();
-			$name = preg_replace('/([a-z])([A-Z])/s','$1 $2', $name);
-			if($name === null)
-				continue;
-			$length = strlen($name) - strlen("Sub Command");
-			$name = substr($name, 0, $length);
-			$elements[] = new MenuOption(TextFormat::DARK_RED.ucfirst($name));
-			$this->link[] = $command;
-		}
-		parent::__construct(
-			TextFormat::BLACK.$plugin->getLanguage()->translateString("form.header", ["Main"]),
-			"",
-			$elements,
-			function(Player $player, int $selectedOption) : void {
-				$form = $this->link[$selectedOption]->getForm($player);
-				if($form === null)
-					return;
-				$form->setPlot($this->plot);
-				$player->sendForm($form);
-			},
-			function(Player $player) : void {}
-		);
-	}
+        $elements = [];
+        foreach ($subCommands as $name => $command) {
+            if (!$command->canUse($player) or $command->getForm($player) === null)
+                continue;
+            $name = (new ReflectionClass($command))->getShortName();
+            $name = preg_replace('/([a-z])([A-Z])/s', '$1 $2', $name);
+            if ($name === null)
+                continue;
+            $length = strlen($name) - strlen("Sub Command");
+            $name = substr($name, 0, $length);
+            $elements[] = new MenuOption(TextFormat::DARK_RED . ucfirst($name));
+            $this->link[] = $command;
+        }
+        parent::__construct(
+            TextFormat::BLACK . $plugin->getLanguage()->translateString("form.header", ["Main"]),
+            "",
+            $elements,
+            function (Player $player, int $selectedOption): void {
+                $form = $this->link[$selectedOption]->getForm($player);
+                if ($form === null)
+                    return;
+                $form->setPlot($this->plot);
+                $player->sendForm($form);
+            },
+            function (Player $player): void {
+            }
+        );
+    }
 }
