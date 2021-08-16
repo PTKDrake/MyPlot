@@ -7,6 +7,7 @@ use MyPlot\MyPlot;
 use MyPlot\subcommand\SubCommand;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use ReflectionClass;
 
 class MainForm extends SimpleMyPlotForm {
 
@@ -19,8 +20,7 @@ class MainForm extends SimpleMyPlotForm {
 	 * @param Player $player
 	 * @param SubCommand[] $subCommands
 	 *
-	 * @throws \ReflectionException
-	 */
+     */
 	public function __construct(Player $player, array $subCommands) {
 		$plugin = MyPlot::getInstance();
 
@@ -30,7 +30,7 @@ class MainForm extends SimpleMyPlotForm {
 		foreach($subCommands as $name => $command) {
 			if(!$command->canUse($player) or $command->getForm($player) === null)
 				continue;
-			$name = (new \ReflectionClass($command))->getShortName();
+			$name = (new ReflectionClass($command))->getShortName();
 			$name = preg_replace('/([a-z])([A-Z])/s','$1 $2', $name);
 			if($name === null)
 				continue;

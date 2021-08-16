@@ -51,14 +51,14 @@ class BuySubCommand extends SubCommand
 		}
 		$price = $plot->price;
 		if(strtolower($args[0] ?? "") !== $this->translateString("confirm")){
-			$sender->sendMessage($this->translateString("buy.confirm", ["{$plot->X};{$plot->Z}", $price]));
+			$sender->sendMessage($this->translateString("buy.confirm", ["$plot->X;$plot->Z", $price]));
 			return true;
 		}
 		$oldOwner = $this->getPlugin()->getServer()->getPlayerByPrefix($plot->owner);
 		if($this->getPlugin()->buyPlot($plot, $sender)) {
-			$sender->sendMessage($this->translateString("buy.success", ["{$plot->X};{$plot->Z}", $price]));
+			$sender->sendMessage($this->translateString("buy.success", ["$plot->X;$plot->Z", $price]));
 			if($oldOwner !== null)
-				$oldOwner->sendMessage($this->translateString("buy.sold", [$sender->getName(), "{$plot->X};{$plot->Z}", $price])); // TODO: queue messages for sending when player rejoins
+				$oldOwner->sendMessage($this->translateString("buy.sold", [$sender->getName(), "$plot->X;$plot->Z", $price])); // TODO: queue messages for sending when player rejoins
 		}else{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
 		}

@@ -53,7 +53,7 @@ class PlotLevelSettings
 	 * PlotLevelSettings constructor.
 	 *
 	 * @param string $name
-	 * @param mixed[] $settings
+	 * @param array $settings
 	 */
 	public function __construct(string $name, array $settings = []) {
 		$this->name = $name;
@@ -81,12 +81,12 @@ class PlotLevelSettings
 
 	/**
 	 * @param string[] $array
-	 * @param string|int $key
+	 * @param int|string $key
 	 * @param Block $default
 	 *
 	 * @return Block
 	 */
-	public static function parseBlock(array &$array, $key, Block $default) : Block {
+	public static function parseBlock(array &$array, int|string $key, Block $default) : Block {
 		if(isset($array[$key])) {
 			$id = $array[$key];
 			if(is_numeric($id)) {
@@ -107,12 +107,12 @@ class PlotLevelSettings
 
 	/**
 	 * @param string[] $array
-	 * @param string|int $key
+	 * @param int|string $key
 	 * @param int $default
 	 *
 	 * @return int
 	 */
-	public static function parseNumber(array &$array, $key, int $default) : int {
+	public static function parseNumber(array &$array, int|string $key, int $default) : int {
 		if(isset($array[$key]) and is_numeric($array[$key])) {
 			return (int) $array[$key];
 		}else{
@@ -121,13 +121,13 @@ class PlotLevelSettings
 	}
 
 	/**
-	 * @param mixed[] $array
-	 * @param string|int $key
+	 * @param array $array
+	 * @param int|string $key
 	 * @param bool $default
 	 *
 	 * @return bool
 	 */
-	public static function parseBool(array &$array, $key, bool $default) : bool {
+	public static function parseBool(array &$array, int|string $key, bool $default) : bool {
 		if(isset($array[$key]) and is_bool($array[$key])) {
 			return $array[$key];
 		}else{

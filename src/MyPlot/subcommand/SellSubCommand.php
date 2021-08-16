@@ -36,9 +36,9 @@ class SellSubCommand extends SubCommand
 			return false;
 		$price = (float)$args[0];
 		if($this->getPlugin()->sellPlot($plot, $price) and $price > 0) {
-			$sender->sendMessage($this->translateString("sell.success", ["{$plot->X};{$plot->Z}", $price]));
+			$sender->sendMessage($this->translateString("sell.success", ["$plot->X;$plot->Z", $price]));
 		}elseif($price <= 0){
-			$sender->sendMessage(TextFormat::RED . $this->translateString("sell.unlisted", ["{$plot->X};{$plot->Z}"]));
+			$sender->sendMessage(TextFormat::RED . $this->translateString("sell.unlisted", ["$plot->X;$plot->Z"]));
 		}else{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
 		}

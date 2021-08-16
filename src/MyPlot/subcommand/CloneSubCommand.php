@@ -24,8 +24,7 @@ class CloneSubCommand extends SubCommand
 		if(count($args) === 0) {
 			return false;
 		}
-		/** @var string[] $plotIdArray */
-		$plotIdArray = explode(";", $args[0]);
+        $plotIdArray = explode(";", $args[0]);
 		if(count($plotIdArray) != 2 or !is_numeric($plotIdArray[0]) or !is_numeric($plotIdArray[1])) {
 			$sender->sendMessage(TextFormat::RED . $this->translateString("clone.wrongid"));
 			return true;

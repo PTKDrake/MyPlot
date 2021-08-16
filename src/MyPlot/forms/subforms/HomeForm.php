@@ -16,7 +16,7 @@ class HomeForm extends SimpleMyPlotForm {
 		$i = 1;
 		$elements = [];
 		foreach($plots as $plot) {
-			$elements[] = new MenuOption(TextFormat::DARK_RED.$i++.") ".$plot->name." ".(string)$plot);
+			$elements[] = new MenuOption(TextFormat::DARK_RED.$i++.") ".$plot->name." ". $plot);
 		}
 		parent::__construct(
 			TextFormat::BLACK.$plugin->getLanguage()->translateString("form.header", [$plugin->getLanguage()->get("home.form")]),

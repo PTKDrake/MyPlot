@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace MyPlot\subcommand;
 
+use JetBrains\PhpStorm\Pure;
 use MyPlot\Commands;
 use MyPlot\forms\MyPlotForm;
 use MyPlot\MyPlot;

@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace MyPlot;
 
 //use jasonwynn10\EasyCommandAutofill\Main;
+use JetBrains\PhpStorm\Pure;
 use MyPlot\forms\MainForm;
 use MyPlot\subcommand\AddHelperSubCommand;
 use MyPlot\subcommand\AutoSubCommand;
@@ -207,15 +208,14 @@ class Commands extends Command implements PluginOwned
 		}
 	}
 
-	/**
-	 * @param CommandSender $sender
-	 * @param string $alias
-	 * @param string[] $args
-	 *
-	 * @return bool
-	 * @throws \ReflectionException
-	 */
-	public function execute(CommandSender $sender, string $alias, array $args) : bool {
+    /**
+     * @param CommandSender $sender
+     * @param string $commandLabel
+     * @param string[] $args
+     *
+     * @return bool
+     */
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : bool {
 		/** @var MyPlot $plugin */
 		$plugin = $this->getOwningPlugin();
 		if($plugin->isDisabled()) {

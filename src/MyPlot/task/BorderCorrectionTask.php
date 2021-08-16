@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace MyPlot\task;
 
+use Exception;
 use MyPlot\MyPlot;
 use MyPlot\Plot;
 use pocketmine\block\Block;
@@ -49,7 +50,10 @@ class BorderCorrectionTask extends Task{
 	/** @var int */
 	protected $maxBlocksPerTick;
 
-	public function __construct(MyPlot $plugin, Plot $start, Plot $end, bool $fillCorner = false, int $cornerDirection = -1, int $maxBlocksPerTick = 256) {
+    /**
+     * @throws Exception
+     */
+    public function __construct(MyPlot $plugin, Plot $start, Plot $end, bool $fillCorner = false, int $cornerDirection = -1, int $maxBlocksPerTick = 256) {
 		$this->plugin = $plugin;
 		$this->start = $start;
 		$this->end = $end;
@@ -90,12 +94,12 @@ class BorderCorrectionTask extends Task{
 			$this->zMax = (int) ($this->plotBeginPos->z + $plotSize);
 			$this->direction = Facing::WEST;
 		}else{
-			throw new \Exception('Merge Plots are not adjacent');
+			throw new Exception('Merge Plots are not adjacent');
 		}
 
 		$this->pos = new Vector3($this->plotBeginPos->x, 0, $this->plotBeginPos->z);
 
-		$plugin->getLogger()->debug("Border Correction Task started between plots {$start->X};{$start->Z} and {$end->X};{$end->Z}");
+		$plugin->getLogger()->debug("Border Correction Task started between plots $start->X;$start->Z and $end->X;$end->Z");
 	}
 
 	public function onRun() : void {

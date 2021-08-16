@@ -9,6 +9,7 @@ use MyPlot\MyPlot;
 use pocketmine\form\FormValidationException;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use stdClass;
 
 class ClaimForm extends ComplexMyPlotForm {
 
@@ -16,7 +17,7 @@ class ClaimForm extends ComplexMyPlotForm {
 		$plugin = MyPlot::getInstance();
 		$plot = $plugin->getPlotByPosition($player->getPosition());
 		if($plot === null) {
-			$plot = new \stdClass();
+			$plot = new stdClass();
 			$plot->X = "";
 			$plot->Z = "";
 		}
@@ -72,7 +73,7 @@ class ClaimForm extends ComplexMyPlotForm {
 				$plotsOfPlayer = 0;
 				foreach($plugin->getPlotLevels() as $level => $settings) {
 					$level = $plugin->getServer()->getWorldManager()->getWorldByName((string)$level);
-					if($level !== null and !$level->isClosed()) {
+					if($level !== null and $level->isLoaded()) {
 						$plotsOfPlayer += count($plugin->getPlotsOfPlayer($player->getName(), $level->getFolderName()));
 					}
 				}

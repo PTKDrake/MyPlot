@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace MyPlot\events;
 
+use JetBrains\PhpStorm\Pure;
 use MyPlot\Plot;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
@@ -23,14 +24,14 @@ class MyPlotBlockEvent extends MyPlotPlotEvent implements Cancellable {
 	/** @var Player $player */
 	private $player;
 
-	/**
-	 * MyPlotBlockEvent constructor.
-	 *
-	 * @param Plot $plot
-	 * @param Block $block
-	 * @param Player $player
-	 * @param BlockPlaceEvent|BlockBreakEvent|PlayerInteractEvent|SignChangeEvent $event
-	 */
+    /**
+     * MyPlotBlockEvent constructor.
+     *
+     * @param Plot $plot
+     * @param Block $block
+     * @param Player $player
+     * @param Event $event
+     */
 	public function __construct(Plot $plot, Block $block, Player $player, Event $event) {
 		$this->block = $block;
 		$this->player = $player;
@@ -42,9 +43,9 @@ class MyPlotBlockEvent extends MyPlotPlotEvent implements Cancellable {
 		return $this->block;
 	}
 
-	/**
-	 * @return BlockPlaceEvent|BlockBreakEvent|PlayerInteractEvent|SignChangeEvent
-	 */
+    /**
+     * @return Event
+     */
 	public function getEvent() : Event {
 		return $this->event;
 	}

@@ -104,12 +104,11 @@ class MergeSubCommand extends SubCommand
 		if($this->getPlugin()->mergePlots($plot, $direction, $maxBlocksPerTick)) {
 			$plot = TextFormat::GREEN . $plot . TextFormat::WHITE;
 			$sender->sendMessage($this->translateString("merge.success", [$plot, $args[0]]));
-			return true;
-		}else{
+        }else{
 			$sender->sendMessage(TextFormat::RED . $this->translateString("error"));
-			return true;
-		}
-	}
+        }
+        return true;
+    }
 
     public function getForm(?Player $player = null) : ?MyPlotForm {
         return null;

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace MyPlot;
 
+use JsonException;
 use MyPlot\events\MyPlotBlockEvent;
 use MyPlot\events\MyPlotBorderChangeEvent;
 use MyPlot\events\MyPlotPlayerEnterPlotEvent;
@@ -44,18 +45,19 @@ class EventListener implements Listener
 		$this->plugin = $plugin;
 	}
 
-	/**
-	 * @ignoreCancelled false
-	 * @priority LOWEST
-	 *
-	 * @param WorldLoadEvent $event
-	 */
+    /**
+     * @ignoreCancelled false
+     * @priority LOWEST
+     *
+     * @param WorldLoadEvent $event
+     */
 	public function onLevelLoad(WorldLoadEvent $event) : void {
 		if(file_exists($this->plugin->getDataFolder()."worlds".DIRECTORY_SEPARATOR.$event->getWorld()->getFolderName().".yml")) {
 			$this->plugin->getLogger()->debug("MyPlot level " . $event->getWorld()->getFolderName() . " loaded!");
 			$options = $event->getWorld()->getProvider()->getWorldData()->getGeneratorOptions();
-			$settings = json_decode($options, true, 512, JSON_THROW_ON_ERROR);
-			$levelName = $event->getWorld()->getFolderName();
+            try {
+                $settings = json_decode($options, true, 512, JSON_THROW_ON_ERROR);
+            $levelName = $event->getWorld()->getFolderName();
 			$default = array_filter((array) $this->plugin->getConfig()->get("DefaultWorld", []), function($key) : bool {
 				return !in_array($key, ["PlotSize", "GroundHeight", "RoadWidth", "RoadBlock", "WallBlock", "PlotFloorBlock", "PlotFillBlock", "BottomBlock"], true);
 			}, ARRAY_FILTER_USE_KEY);
@@ -65,6 +67,8 @@ class EventListener implements Listener
 			}
 			$this->plugin->addLevelSettings($levelName, new PlotLevelSettings($levelName, $settings));
 
+            } catch (JsonException $e) {
+            }
 			if($this->plugin->getConfig()->get('AllowFireTicking', false) === false) {
 				$event->getWorld()->removeRandomTickedBlock(VanillaBlocks::FIRE());
 			}
@@ -130,9 +134,9 @@ class EventListener implements Listener
 	}
 
 	/**
-	 * @param BlockPlaceEvent|BlockBreakEvent|PlayerInteractEvent|SignChangeEvent $event
+	 * @param BlockBreakEvent|BlockPlaceEvent|PlayerInteractEvent|SignChangeEvent $event
 	 */
-	private function onEventOnBlock($event) : void {
+	private function onEventOnBlock(BlockPlaceEvent|SignChangeEvent|PlayerInteractEvent|BlockBreakEvent $event) : void {
 		if(!$event->getBlock()->getPos()->isValid())
 			return;
 		$levelName = $event->getBlock()->getPos()->getWorld()->getFolderName();
@@ -322,16 +326,16 @@ class EventListener implements Listener
 
 	/**
 	 * @param Player $player
-	 * @param PlayerMoveEvent|EntityTeleportEvent $event
+	 * @param EntityTeleportEvent|PlayerMoveEvent $event
 	 */
-	private function onEventOnMove(Player $player, $event) : void {
+	private function onEventOnMove(Player $player, EntityTeleportEvent|PlayerMoveEvent $event) : void {
 		$levelName = $player->getWorld()->getFolderName();
 		if (!$this->plugin->isLevelLoaded($levelName))
 			return;
 		$plot = $this->plugin->getPlotByPosition($event->getTo());
 		$plotFrom = $this->plugin->getPlotByPosition($event->getFrom());
 		if($plot !== null and ($plotFrom === null or !$plot->isSame($plotFrom))) {
-			if(strpos((string) $plot, "-0") !== false) {
+			if(str_contains((string)$plot, "-0")) {
 				return;
 			}
 			$ev = new MyPlotPlayerEnterPlotEvent($plot, $player);
@@ -373,7 +377,7 @@ class EventListener implements Listener
 			$popup = TextFormat::WHITE . $paddingPopup . $popup . "\n" . TextFormat::WHITE . $paddingOwnerPopup . $ownerPopup;
 			$ev->getPlayer()->sendTip($popup);
 		}elseif($plotFrom !== null and ($plot === null or !$plot->isSame($plotFrom))) {
-			if(strpos((string) $plotFrom, "-0") !== false) {
+			if(str_contains((string)$plotFrom, "-0")) {
 				return;
 			}
 			$ev = new MyPlotPlayerLeavePlotEvent($plotFrom, $player);

@@ -29,8 +29,7 @@ class WarpSubCommand extends SubCommand
 			$sender->sendMessage(TextFormat::RED . $this->translateString("warp.notinplotworld"));
 			return true;
 		}
-		/** @var string[] $plotIdArray */
-		$plotIdArray = explode(";", $args[0]);
+        $plotIdArray = explode(";", $args[0]);
 		if(count($plotIdArray) != 2 or !is_numeric($plotIdArray[0]) or !is_numeric($plotIdArray[1])) {
 			$sender->sendMessage(TextFormat::RED . $this->translateString("warp.wrongid"));
 			return true;

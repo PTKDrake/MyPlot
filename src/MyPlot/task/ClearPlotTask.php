@@ -10,13 +10,15 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
+use pocketmine\world\Position;
+use pocketmine\world\World;
 
 class ClearPlotTask extends Task {
 	/** @var MyPlot $plugin */
 	protected $plugin;
 	/** @var Plot $plot */
 	protected $plot;
-	/** @var \pocketmine\world\World|null $level */
+	/** @var World|null $level */
 	protected $level;
 	/** @var int $height */
 	protected $height;
@@ -26,7 +28,7 @@ class ClearPlotTask extends Task {
 	protected $plotFillBlock;
 	/** @var Block $plotFloorBlock */
 	protected $plotFloorBlock;
-	/** @var \pocketmine\world\Position|null $plotBeginPos */
+	/** @var Position|null $plotBeginPos */
 	protected $plotBeginPos;
 	/** @var int $xMax */
 	protected $xMax;
@@ -73,10 +75,10 @@ class ClearPlotTask extends Task {
 		    if($this->xMax < $xMaxPlot) $this->xMax = $xMaxPlot;
 		    if($this->zMax < $zMaxPlot) $this->zMax = $zMaxPlot;
         }
-        $this->level = $this->plotBeginPos->getLevelNonNull();
+        $this->level = $this->plotBeginPos->getWorld();
         $this->pos = new Vector3($this->plotBeginPos->x, 0, $this->plotBeginPos->z);
         $this->plotBB = $this->plugin->getPlotBB($plot);
-		$plugin->getLogger()->debug("Plot Clear Task started at plot {$plot->X};{$plot->Z}");
+		$plugin->getLogger()->debug("Plot Clear Task started at plot $plot->X;$plot->Z");
 	}
 
 	public function onRun() : void {
@@ -92,7 +94,7 @@ class ClearPlotTask extends Task {
 		$blocks = 0;
 		while($this->pos->x < $this->xMax) {
 			while($this->pos->z < $this->zMax) {
-				while($this->pos->y < $this->level->getWorldHeight()) {
+				while($this->pos->y < $this->level->getMaxY()) {
 					if($this->pos->y === 0) {
 						$block = $this->bottomBlock;
 					}elseif($this->pos->y < $this->height) {

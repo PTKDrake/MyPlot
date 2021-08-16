@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace MyPlot\events;
 
+use JetBrains\PhpStorm\Pure;
 use MyPlot\Plot;
 use pocketmine\event\Cancellable;
 use pocketmine\event\CancellableTrait;
@@ -44,11 +45,11 @@ class MyPlotDenyEvent extends MyPlotPlotEvent implements Cancellable {
 	}
 
 	/**
-	 * @param IPlayer|string $player
+	 * @param string|IPlayer $player
 	 *
 	 * @return self
 	 */
-	public function setDenied($player) : self {
+	public function setDenied(string|IPlayer $player) : self {
 		if($player instanceof IPlayer) {
 			$this->player = $player->getName();
 		}elseif(is_string($player)) {

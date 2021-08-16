@@ -37,9 +37,8 @@ abstract class SubCommand implements PluginOwned
 
     /**
      * @param string $str
-     * @param (float|int|string)[] $params
-     *
-     * @param string $onlyPrefix
+     * @param array $params
+     * @param string|null $onlyPrefix
      * @return string
      */
 	protected function translateString(string $str, array $params = [], string $onlyPrefix = null) : string {

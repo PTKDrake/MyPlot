@@ -2,12 +2,14 @@
 declare(strict_types=1);
 namespace MyPlot;
 
+use JsonException;
 use pocketmine\block\Block;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\data\bedrock\BiomeIds;
 use pocketmine\world\ChunkManager;
 use pocketmine\world\format\Chunk;
 use pocketmine\world\generator\Generator;
+use SplFixedArray;
 
 class MyPlotGenerator extends Generator {
 	/** @var Block $roadBlock */
@@ -41,7 +43,7 @@ class MyPlotGenerator extends Generator {
 		parent::__construct($seed, $preset);
 		try{
 			$options = json_decode($preset, true, 512, JSON_THROW_ON_ERROR);
-		}catch(\JsonException $e) {
+		}catch(JsonException $e) {
 			$options = [];
 		}
 		$this->roadBlock = PlotLevelSettings::parseBlock($options, "RoadBlock", VanillaBlocks::OAK_PLANKS());
@@ -84,7 +86,7 @@ class MyPlotGenerator extends Generator {
 		}
 	}
 
-	public function getShape(int $x, int $z) : \SplFixedArray {
+	public function getShape(int $x, int $z) : SplFixedArray {
 		$totalSize = $this->plotSize + $this->roadWidth;
 		if($x >= 0) {
 			$X = $x % $totalSize;
@@ -97,7 +99,7 @@ class MyPlotGenerator extends Generator {
 			$Z = $totalSize - abs($z % $totalSize);
 		}
 		$startX = $X;
-		$shape = new \SplFixedArray(256);
+		$shape = new SplFixedArray(256);
 		for($z = 0; $z < 16; $z++, $Z++) {
 			if($Z === $totalSize) {
 				$Z = 0;

@@ -10,6 +10,7 @@ use MyPlot\MyPlot;
 use pocketmine\form\FormValidationException;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use stdClass;
 
 class CloneForm extends ComplexMyPlotForm {
 
@@ -20,7 +21,7 @@ class CloneForm extends ComplexMyPlotForm {
 		$plugin = MyPlot::getInstance();
 		$plot = $plugin->getPlotByPosition($player->getPosition());
 		if($plot === null) {
-			$plot = new \stdClass();
+			$plot = new stdClass();
 			$plot->X = "";
 			$plot->Z = "";
 		}
